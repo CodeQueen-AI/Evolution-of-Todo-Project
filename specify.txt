@@ -1,0 +1,25 @@
+3.1 Add Task Workflow (Updated – No Priority)
+
+Flow:
+
+Prompt the user for the task title using questionary.text()
+
+Validate that the task title is not empty
+
+Save the task with a default status of Pending
+
+Display success or error messages using rich color formatting
+
+Pause briefly to allow the user to read the message, then return to the main menu
+
+Notes:
+
+The task does not include a priority field
+
+Each task contains only:
+
+ID
+
+Title
+
+Status (Pending / Completed)
