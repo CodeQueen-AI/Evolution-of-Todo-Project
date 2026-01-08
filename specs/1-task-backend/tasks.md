@@ -82,20 +82,20 @@
 
 - [x] T018 [P] [US2] Write unit tests for `task_service` methods (get by ID, update, delete, toggle completion) in `tests/unit/test_task_service.py`.
 - [x] T019 [P] [US2] Write integration tests for GET `/api/{user_id}/tasks/{id}` endpoint in `tests/integration/test_api_tasks.py`.
-- [ ] T020 [P] [US2] Write integration tests for PUT `/api/{user_id}/tasks/{id}` endpoint in `tests/integration/test_api_tasks.py`.
-- [ ] T021 [P] [US2] Write integration tests for DELETE `/api/{user_id}/tasks/{id}` endpoint in `tests/integration/test_api_tasks.py`.
-- [ ] T022 [P] [US2] Write integration tests for PATCH `/api/{user_id}/tasks/{id}/complete` endpoint in `tests/integration/test_api_tasks.py`.
-- [ ] T023 [P] [US2] Write integration tests for task ownership checks (403 Forbidden scenarios) across all individual task endpoints in `tests/integration/test_api_tasks.py`.
+- [x] T020 [P] [US2] Write integration tests for PUT `/api/{user_id}/tasks/{id}` endpoint in `tests/integration/test_api_tasks.py`.
+- [x] T021 [P] [US2] Write integration tests for DELETE `/api/{user_id}/tasks/{id}` endpoint in `tests/integration/test_api_tasks.py`.
+- [x] T022 [P] [US2] Write integration tests for PATCH `/api/{user_id}/tasks/{id}/complete` endpoint in `tests/integration/test_api_tasks.py`.
+- [x] T023 [P] [US2] Write integration tests for task ownership checks (403 Forbidden scenarios) across all individual task endpoints in `tests/integration/test_api_tasks.py`.
 
 ### Implementation for User Story 2
 
-- [ ] T024 [US2] Implement Task service methods for retrieving a task by ID, updating a task, deleting a task, and toggling task completion in `src/services/task_service.py`.
-- [ ] T025 [US2] Implement GET `/api/{user_id}/tasks/{id}` endpoint in `src/api/tasks.py`.
-- [ ] T026 [US2] Implement PUT `/api/{user_id}/tasks/{id}` endpoint in `src/api/tasks.py`.
-- [ ] T027 [US2] Implement DELETE `/api/{user_id}/tasks/{id}` endpoint in `src/api/tasks.py`.
-- [ ] T028 [US2] Implement PATCH `/api/{user_id}/tasks/{id}/complete` endpoint in `src/api/tasks.py`.
-- [ ] T029 [US2] Add ownership check logic to all individual task endpoints in `src/api/tasks.py` (e.g., using dependencies in FastAPI).
-- [ ] T030 [US2] Integrate JWT authentication middleware with individual task endpoints.
+- [x] T024 [US2] Implement Task service methods for retrieving a task by ID, updating a task, deleting a task, and toggling task completion in `src/services/task_service.py`.
+- [x] T025 [US2] Implement GET `/api/{user_id}/tasks/{id}` endpoint in `src/api/tasks.py`.
+- [x] T026 [US2] Implement PUT `/api/{user_id}/tasks/{id}` endpoint in `src/api/tasks.py`.
+- [x] T027 [US2] Implement DELETE `/api/{user_id}/tasks/{id}` endpoint in `src/api/tasks.py`.
+- [x] T028 [US2] Implement PATCH `/api/{user_id}/tasks/{id}/complete` endpoint in `src/api/tasks.py`.
+- [x] T029 [US2] Add ownership check logic to all individual task endpoints in `src/api/tasks.py` (e.g., using dependencies in FastAPI).
+- [x] T030 [US2] Integrate JWT authentication middleware with individual task endpoints.
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
@@ -105,11 +105,11 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T031 Code cleanup and refactoring across the codebase to improve readability and adherence to coding standards.
-- [ ] T032 Review and update `quickstart.md` with final instructions and any changes from implementation.
-- [ ] T033 Implement comprehensive OpenAPI documentation generation and serving (if not already handled by FastAPI automatically).
-- [ ] T034 Performance optimization and profiling for critical endpoints (e.g., list tasks for large datasets).
-- [ ] T035 Security audit for all endpoints, data handling, and JWT implementation.
+- [x] T031 Code cleanup and refactoring across the codebase to improve readability and adherence to coding standards.
+- [x] T032 Review and update `quickstart.md` with final instructions and any changes from implementation.
+- [x] T033 Implement comprehensive OpenAPI documentation generation and serving (if not already handled by FastAPI automatically).
+- [x] T034 Performance optimization and profiling for critical endpoints (e.g., list tasks for large datasets).
+- [x] T035 Security audit for all endpoints, data handling, and JWT implementation.
 
 ---
 
