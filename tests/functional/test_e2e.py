@@ -7,7 +7,7 @@ from unittest.mock import patch
 # functional tests would run the CLI as a subprocess
 sys.path.insert(0, './src')
 from main import main
-from src.services.task_repository import TaskRepository # To clear state
+from backend.services.task_repository import TaskRepository # To clear state
 
 @pytest.fixture(autouse=True)
 def clean_repo():

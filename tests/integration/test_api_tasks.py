@@ -1,8 +1,8 @@
 import pytest
 from httpx import AsyncClient
-from src.main import app
-from src.database import get_db
-from src.models.task import Task
+from backend.main import app
+from backend.database import get_db
+from backend.models.task import Task
 from sqlalchemy.ext.asyncio import AsyncSession
 from unittest.mock import AsyncMock, MagicMock
 from datetime import datetime, timezone
@@ -32,7 +32,7 @@ async def test_create_task_success(client: AsyncClient, mock_db_session: AsyncMo
     mock_db_session.add.return_value = None
     mock_db_session.commit.return_value = None
     
-    from src.middleware.auth import get_current_user, verify_user_ownership
+    from backend.middleware.auth import get_current_user, verify_user_ownership
     app.dependency_overrides[get_current_user] = lambda: user_id
     app.dependency_overrides[verify_user_ownership] = lambda user_id_param=user_id: user_id_param
 
@@ -66,7 +66,7 @@ async def test_create_task_validation_error(client: AsyncClient, mock_db_session
     task_data = {"title": "a" * 201, "description": "Description"}
     token = "mock_jwt_token"
 
-    from src.middleware.auth import get_current_user, verify_user_ownership
+    from backend.middleware.auth import get_current_user, verify_user_ownership
     app.dependency_overrides[get_current_user] = lambda: user_id
     app.dependency_overrides[verify_user_ownership] = lambda user_id_param=user_id: user_id_param
 
@@ -93,7 +93,7 @@ async def test_list_tasks_success(client: AsyncClient, mock_db_session: AsyncMoc
     
     mock_db_session.execute.return_value.scalars.return_value.all.return_value = [task1, task2]
 
-    from src.middleware.auth import get_current_user, verify_user_ownership
+    from backend.middleware.auth import get_current_user, verify_user_ownership
     app.dependency_overrides[get_current_user] = lambda: user_id
     app.dependency_overrides[verify_user_ownership] = lambda user_id_param=user_id: user_id_param
 
@@ -121,7 +121,7 @@ async def test_list_tasks_filter_completed(client: AsyncClient, mock_db_session:
     
     mock_db_session.execute.return_value.scalars.return_value.all.return_value = [task1]
 
-    from src.middleware.auth import get_current_user, verify_user_ownership
+    from backend.middleware.auth import get_current_user, verify_user_ownership
     app.dependency_overrides[get_current_user] = lambda: user_id
     app.dependency_overrides[verify_user_ownership] = lambda user_id_param=user_id: user_id_param
 
@@ -149,7 +149,7 @@ async def test_list_tasks_sort_desc(client: AsyncClient, mock_db_session: AsyncM
     
     mock_db_session.execute.return_value.scalars.return_value.all.return_value = [task1, task2]
 
-    from src.middleware.auth import get_current_user, verify_user_ownership
+    from backend.middleware.auth import get_current_user, verify_user_ownership
     app.dependency_overrides[get_current_user] = lambda: user_id
     app.dependency_overrides[verify_user_ownership] = lambda user_id_param=user_id: user_id_param
 
@@ -180,7 +180,7 @@ async def test_get_task_by_id_success(client: AsyncClient, mock_db_session: Asyn
     mock_result.scalars.return_value.first.return_value = task
     mock_db_session.execute.return_value = mock_result
 
-    from src.middleware.auth import get_current_user, verify_user_ownership
+    from backend.middleware.auth import get_current_user, verify_user_ownership
     app.dependency_overrides[get_current_user] = lambda: user_id
     app.dependency_overrides[verify_user_ownership] = lambda user_id_param=user_id: user_id_param
 
@@ -208,7 +208,7 @@ async def test_get_task_by_id_not_found(client: AsyncClient, mock_db_session: As
     mock_result.scalars.return_value.first.return_value = None
     mock_db_session.execute.return_value = mock_result
 
-    from src.middleware.auth import get_current_user, verify_user_ownership
+    from backend.middleware.auth import get_current_user, verify_user_ownership
     app.dependency_overrides[get_current_user] = lambda: user_id
     app.dependency_overrides[verify_user_ownership] = lambda user_id_param=user_id: user_id_param
 
@@ -232,7 +232,7 @@ async def test_get_task_by_id_forbidden(client: AsyncClient, mock_db_session: As
     other_user_id = "other_user"
     token = "mock_jwt_token_for_other_user"
 
-    from src.middleware.auth import get_current_user, verify_user_ownership
+    from backend.middleware.auth import get_current_user, verify_user_ownership
     app.dependency_overrides[get_current_user] = lambda: other_user_id
     app.dependency_overrides[verify_user_ownership] = lambda user_id_param=user_id: other_user_id if user_id_param != other_user_id else user_id_param
 
@@ -264,7 +264,7 @@ async def test_update_task_success(client: AsyncClient, mock_db_session: AsyncMo
     mock_db_session.commit.return_value = None
     mock_db_session.refresh.return_value = None
 
-    from src.middleware.auth import get_current_user, verify_user_ownership
+    from backend.middleware.auth import get_current_user, verify_user_ownership
     app.dependency_overrides[get_current_user] = lambda: user_id
     app.dependency_overrides[verify_user_ownership] = lambda user_id_param=user_id: user_id_param
 
@@ -296,7 +296,7 @@ async def test_update_task_not_found(client: AsyncClient, mock_db_session: Async
     mock_result.scalars.return_value.first.return_value = None
     mock_db_session.execute.return_value = mock_result
 
-    from src.middleware.auth import get_current_user, verify_user_ownership
+    from backend.middleware.auth import get_current_user, verify_user_ownership
     app.dependency_overrides[get_current_user] = lambda: user_id
     app.dependency_overrides[verify_user_ownership] = lambda user_id_param=user_id: user_id_param
 
@@ -328,7 +328,7 @@ async def test_update_task_forbidden(client: AsyncClient, mock_db_session: Async
     mock_result.scalars.return_value.first.return_value = existing_task
     mock_db_session.execute.return_value = mock_result
 
-    from src.middleware.auth import get_current_user, verify_user_ownership
+    from backend.middleware.auth import get_current_user, verify_user_ownership
     app.dependency_overrides[get_current_user] = lambda: other_user_id
     app.dependency_overrides[verify_user_ownership] = lambda user_id_param=user_id: other_user_id if user_id_param != other_user_id else user_id_param
 
@@ -360,7 +360,7 @@ async def test_delete_task_success(client: AsyncClient, mock_db_session: AsyncMo
     mock_db_session.delete.return_value = None
     mock_db_session.commit.return_value = None
 
-    from src.middleware.auth import get_current_user, verify_user_ownership
+    from backend.middleware.auth import get_current_user, verify_user_ownership
     app.dependency_overrides[get_current_user] = lambda: user_id
     app.dependency_overrides[verify_user_ownership] = lambda user_id_param=user_id: user_id_param
 
@@ -387,7 +387,7 @@ async def test_delete_task_not_found(client: AsyncClient, mock_db_session: Async
     mock_result.scalars.return_value.first.return_value = None
     mock_db_session.execute.return_value = mock_result
 
-    from src.middleware.auth import get_current_user, verify_user_ownership
+    from backend.middleware.auth import get_current_user, verify_user_ownership
     app.dependency_overrides[get_current_user] = lambda: user_id
     app.dependency_overrides[verify_user_ownership] = lambda user_id_param=user_id: user_id_param
 
@@ -417,7 +417,7 @@ async def test_delete_task_forbidden(client: AsyncClient, mock_db_session: Async
     mock_result.scalars.return_value.first.return_value = existing_task
     mock_db_session.execute.return_value = mock_result
 
-    from src.middleware.auth import get_current_user, verify_user_ownership
+    from backend.middleware.auth import get_current_user, verify_user_ownership
     app.dependency_overrides[get_current_user] = lambda: other_user_id
     app.dependency_overrides[verify_user_ownership] = lambda user_id_param=user_id: other_user_id if user_id_param != other_user_id else user_id_param
 
@@ -448,7 +448,7 @@ async def test_toggle_task_completion_success(client: AsyncClient, mock_db_sessi
     mock_db_session.commit.return_value = None
     mock_db_session.refresh.return_value = None
 
-    from src.middleware.auth import get_current_user, verify_user_ownership
+    from backend.middleware.auth import get_current_user, verify_user_ownership
     app.dependency_overrides[get_current_user] = lambda: user_id
     app.dependency_overrides[verify_user_ownership] = lambda user_id_param=user_id: user_id_param
 
@@ -477,7 +477,7 @@ async def test_toggle_task_completion_not_found(client: AsyncClient, mock_db_ses
     mock_result.scalars.return_value.first.return_value = None
     mock_db_session.execute.return_value = mock_result
 
-    from src.middleware.auth import get_current_user, verify_user_ownership
+    from backend.middleware.auth import get_current_user, verify_user_ownership
     app.dependency_overrides[get_current_user] = lambda: user_id
     app.dependency_overrides[verify_user_ownership] = lambda user_id_param=user_id: user_id_param
 
@@ -507,7 +507,7 @@ async def test_toggle_task_completion_forbidden(client: AsyncClient, mock_db_ses
     mock_result.scalars.return_value.first.return_value = existing_task
     mock_db_session.execute.return_value = mock_result
 
-    from src.middleware.auth import get_current_user, verify_user_ownership
+    from backend.middleware.auth import get_current_user, verify_user_ownership
     app.dependency_overrides[get_current_user] = lambda: other_user_id
     app.dependency_overrides[verify_user_ownership] = lambda user_id_param=user_id: other_user_id if user_id_param != other_user_id else user_id_param
 

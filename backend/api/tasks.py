@@ -3,10 +3,14 @@ from fastapi import APIRouter, Depends, status, HTTPException, Path, Query
 from pydantic import BaseModel, Field
 from datetime import datetime # Added for TaskResponse
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.database import get_db
-from src.services.task_service import TaskService
-from src.middleware.auth import get_current_user, verify_user_ownership
-from src.models.task import Task # For return type hinting
+# from backend.database import get_db
+# from backend.services.task_service import TaskService
+# from backend.middleware.auth import get_current_user, verify_user_ownership
+# from backend.models.task import Task # For return type hinting
+from database import get_db
+from services.task_service import TaskService
+from middleware.auth import get_current_user, verify_user_ownership
+from models.task import Task # For return type hinting
 
 router = APIRouter()
 

@@ -2,8 +2,8 @@ import pytest
 from datetime import datetime, timezone
 from unittest.mock import AsyncMock, MagicMock
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.models.task import Task
-from src.services.task_service import TaskService
+from backend.models.task import Task
+from backend.services.task_service import TaskService
 from sqlalchemy import select
 
 @pytest.fixture

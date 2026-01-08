@@ -4,8 +4,8 @@ from typing import Annotated
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-from src.config import settings
-
+# from backend.config import settings
+from config import settings
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token") # Not actually used for /token endpoint, but for dependency
 
 def create_access_token(data: dict):

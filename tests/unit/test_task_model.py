@@ -1,6 +1,6 @@
 import pytest
 from datetime import datetime, timedelta
-from src.models.task import Task
+from backend.models.task import Task
 from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime
 from sqlalchemy.orm import sessionmaker, declarative_base
 

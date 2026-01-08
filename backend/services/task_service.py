@@ -1,8 +1,8 @@
 from typing import List, Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, and_, asc, desc
-from src.models.task import Task
-
+# from backend.models.task import Task
+from models.task import Task
 class TaskService:
     def __init__(self, db: AsyncSession):
         self.db = db

@@ -1,8 +1,12 @@
 from typing import Optional, List
-from src.services.task_service import TaskService
-from src.services.task_repository import TaskRepository # Import repository to instantiate service
-from src.models.task import Task # Import Task model
-from src.cli.error_handler import handle_error, get_int_input
+# from backend.services.task_service import TaskService
+# from backend.services.task_repository import TaskRepository # Import repository to instantiate service
+# from backend.models.task import Task # Import Task model
+# from backend.cli.error_handler import handle_error, get_int_input
+from services.task_service import TaskService
+from services.task_repository import TaskRepository # Import repository to instantiate service
+from models.task import Task # Import Task model
+from cli.error_handler import handle_error, get_int_input
 
 def add_task_command(task_service: TaskService):
     title = input("Enter task title (required): ").strip()
