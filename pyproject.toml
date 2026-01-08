@@ -1,0 +1,47 @@
+[tool.poetry]
+name = "todo-app-backend"
+version = "0.1.0"
+description = "Backend for Todo App Phase II, managing tasks via API."
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.109.0"
+uvicorn = {extras = ["standard"], version = "^0.27.0"}
+pydantic-settings = "^2.2.1"
+sqlalchemy = "^2.0.25"
+asyncpg = "^0.29.0"
+python-dotenv = "^1.0.1" # For loading .env files with pydantic-settings
+python-jose = {extras = ["cryptography"], version = "^3.3.0"} # For JWT
+passlib = {extras = ["bcrypt"], version = "^1.7.4"} # For password hashing if needed, though JWT is for auth
+pyjwt = "^2.8.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+flake8 = "^7.0.0"
+black = "^24.2.0"
+isort = "^5.13.2" # For formatting imports
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

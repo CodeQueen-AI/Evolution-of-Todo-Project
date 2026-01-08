@@ -1,38 +1,54 @@
-from src.services.task_repository import TaskRepository
-from src.services.task_service import TaskService
-from src.cli.commands import add_task_command, view_tasks_command, update_task_command, delete_task_command, toggle_completion_command
+from fastapi import FastAPI, Request, status, HTTPException
+from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
+from src.logging_config import setup_logging
+import logging
+from src.api import tasks # Import the tasks router
 
-def main():
-    print("Welcome to the Todo CLI App!")
-    repository = TaskRepository()
-    service = TaskService(repository)
+setup_logging()
+logger = logging.getLogger(__name__)
 
-    while True:
-        print("\nMenu:")
-        print("1. Add Task")
-        print("2. View Tasks")
-        print("3. Update Task")
-        print("4. Delete Task")
-        print("5. Toggle Completion")
-        print("6. Exit")
+app = FastAPI(
+    title="Todo App Backend API",
+    description="API for managing user tasks, including creation, retrieval, updates, and deletion.",
+    version="1.0.0",
+)
 
-        choice = input("Enter your choice: ").strip()
+app.include_router(tasks.router, prefix="/api") # Include the tasks router
 
-        if choice == '1':
-            add_task_command(service)
-        elif choice == '2':
-            view_tasks_command(service)
-        elif choice == '3':
-            update_task_command(service)
-        elif choice == '4':
-            delete_task_command(service)
-        elif choice == '5':
-            toggle_completion_command(service)
-        elif choice == '6':
-            print("Exiting Todo CLI App. Goodbye!")
-            break
-        else:
-            print("Invalid choice. Please try again.")
+@app.on_event("startup")
+async def startup_event():
+    logger.info("Application starting up...")
 
-if __name__ == "__main__":
-    main()
+@app.on_event("shutdown")
+async def shutdown_event():
+    logger.info("Application shutting down...")
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    logger.error(f"Validation error: {exc.errors()} for request: {request.url}")
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content={"detail": exc.errors(), "message": "Validation Error"},
+    )
+
+@app.exception_handler(HTTPException) # Catch all HTTPException
+async def http_exception_handler(request: Request, exc: HTTPException):
+    logger.error(f"HTTP exception: {exc.detail} with status {exc.status_code} for request: {request.url}")
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"detail": exc.detail, "message": "HTTP Error"},
+    )
+
+@app.exception_handler(Exception) # Catch all other exceptions
+async def generic_exception_handler(request: Request, exc: Exception):
+    logger.exception(f"Unhandled exception for request: {request.url}") # Logs traceback
+    return JSONResponse(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        content={"detail": "An unexpected error occurred.", "message": "Internal Server Error"},
+    )
+
+@app.get("/")
+async def root():
+    return {"message": "Todo App Backend API is running!"}
