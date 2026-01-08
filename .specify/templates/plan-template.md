@@ -31,7 +31,9 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] **Modularity:** Ensure components are self-contained with well-defined interfaces.
+- [ ] **Testability:** Verify that all critical components are covered by automated tests.
+- [ ] **Maintainability:** Confirm that the design promotes clean, readable, and well-documented code.
 
 ## Project Structure
 

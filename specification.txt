@@ -1,0 +1,34 @@
+# Backend Specs – Todo App Phase II
+
+Purpose:
+- Handle all data operations, and validation
+- Ensure task ownership and secure endpoints via JWT.
+- Store all tasks persistently in PostgreSQL (Neon Serverless)
+
+Tasks:
+- id: integer (primary key)
+- user_id: string (foreign key to users.id)
+- title: string (required, 1-200 characters)
+- description: string (optional, max 1000 characters)
+- completed: boolean (default false)
+- created_at: timestamp
+- updated_at: timestamp
+
+Indexes:
+- tasks.user_id → for filtering tasks by user
+- tasks.completed → for status filtering
+
+API Endpoints:
+- GET /api/{user_id}/tasks → list all tasks for the user, filter by status and sort
+- POST /api/{user_id}/tasks → create a new task
+- GET /api/{user_id}/tasks/{id} → get details of a task, only if owned by user
+- PUT /api/{user_id}/tasks/{id} → update task title/description, only owner
+- DELETE /api/{user_id}/tasks/{id} → delete a task, only owner
+- PATCH /api/{user_id}/tasks/{id}/complete → toggle task completion, only owner
+
+Validation Rules:
+- Title: 1-200 characters
+- Description: optional, max 1000 characters
+- JWT token required for all endpoints, expires in 7 days
+- Unauthorized or invalid access → return 401/403
+

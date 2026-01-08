@@ -249,3 +249,7 @@ With multiple developers:
 - Commit after each task or logical group
 - Stop at any checkpoint to validate story independently
 - Avoid: vague tasks, same file conflicts, cross-story dependencies that break independence
+- Adhere to Project Constitution principles:
+  - **Modularity:** Design tasks to build modular components with clear interfaces.
+  - **Testability:** Ensure tasks contribute to features that are easily testable.
+  - **Maintainability:** Focus on clear, readable code and good documentation within each task.

@@ -95,6 +95,12 @@
 - **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
 - **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
 
+### Architectural Considerations (Aligned with Project Constitution)
+
+- **Modularity**: Requirements should implicitly support a modular design, allowing for independent development and testing of components.
+- **Testability**: All functional requirements must be clearly defined such that they are verifiable through automated tests.
+- **Maintainability**: Requirements should promote clear, concise, and well-structured code.
+
 ### Key Entities *(include if feature involves data)*
 
 - **[Entity 1]**: [What it represents, key attributes without implementation]

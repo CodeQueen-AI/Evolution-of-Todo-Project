@@ -1,82 +1,55 @@
 <!--
 Sync Impact Report:
-Version change: N/A → 0.1.0
+Version change: N/A -> 0.1.0
 List of modified principles:
-  - Terminal-Based Application
-  - In-Memory Data Storage
-  - Clean, Readable, and Modular Code
-  - Single-Responsibility Principle
-  - Standard Library Only
-  - Adherence to Specification
-  - Unique Task IDs
-  - Graceful Invalid Input Handling
-  - Clear User Interaction
-Added sections: Non-Goals, Quality Bar.
-Removed sections: None (template was generic).
+  - N/A (Initial principles added)
+Added sections:
+  - Principles 1.1 (Modularity), 1.2 (Testability), 1.3 (Maintainability)
+Removed sections:
+  - N/A
 Templates requiring updates:
-  - .specify/templates/plan-template.md ⚠ pending
-  - .specify/templates/spec-template.md ⚠ pending
-  - .specify/templates/tasks-template.md ⚠ pending
-  - .specify/commands/sp.adr.toml ⚠ pending
-  - .specify/commands/sp.analyze.toml ⚠ pending
-  - .specify/commands/sp.checklist.toml ⚠ pending
-  - .specify/commands/sp.clarify.toml ⚠ pending
-  - .specify/commands/sp.constitution.toml ⚠ pending
-  - .specify/commands/sp.git.commit_pr.toml ⚠ pending
-  - .specify/commands/sp.implement.toml ⚠ pending
-  - .specify/commands/sp.phr.toml ⚠ pending
-  - .specify/commands/sp.plan.toml ⚠ pending
-  - .specify/commands/sp.reverse-engineer.toml ⚠ pending
-  - .specify/commands/sp.specify.toml ⚠ pending
-  - .specify/commands/sp.tasks.toml ⚠ pending
-  - .specify/commands/sp.taskstoissues.toml ⚠ pending
-Follow-up TODOs: None.
+  - .specify/templates/plan-template.md: ⚠ pending
+  - .specify/templates/spec-template.md: ⚠ pending
+  - .specify/templates/tasks-template.md: ⚠ pending
+  - README.md: N/A (File not found)
+  - docs/quickstart.md: N/A (File not found)
+Follow-up TODOs: N/A
 -->
-# Python CLI Todo Application Constitution
+# Project Constitution
 
-## Core Principles
+This document outlines the core principles and guidelines governing the development and evolution of the Todo CLI App project. It serves as a foundational agreement for all contributors.
 
-### I. Terminal-Based Application
-Every feature must run in the terminal (console-based).
+## 1. Principles
 
-### II. In-Memory Data Storage
-Data must be stored in memory (no database, no files).
+### 1.1. Modularity
+- **Description:** Components should be self-contained and have well-defined interfaces, minimizing dependencies and promoting reusability.
+- **Rationale:** Enhances understanding, simplifies debugging, and allows for independent development and testing of features.
 
-### III. Clean, Readable, and Modular Code
-Code must be clean, readable, and modular.
+### 1.2. Testability
+- **Description:** All features and critical components must be covered by automated tests (unit, integration, and end-to-end) to ensure correctness and prevent regressions.
+- **Rationale:** Guarantees software quality, facilitates continuous integration, and provides confidence in refactoring and new feature development.
 
-### IV. Single-Responsibility Principle
-Follow single-responsibility principle.
+### 1.3. Maintainability
+- **Description:** Code should be clean, readable, well-documented, and follow established coding standards to facilitate future modifications and bug fixes.
+- **Rationale:** Reduces long-term costs, improves developer onboarding, and ensures the project remains adaptable over time.
 
-### V. Standard Library Only
-No external libraries except Python standard library.
+## 2. Governance
 
-### VI. Adherence to Specification
-Do not add features outside the specification.
+### 2.1. Versioning
+The constitution follows semantic versioning (MAJOR.MINOR.PATCH).
+- **MAJOR:** Backward incompatible governance/principle removals or redefinitions.
+- **MINOR:** New principle/section added or materially expanded guidance.
+- **PATCH:** Clarifications, wording, typo fixes, non-semantic refinements.
 
-### VII. Unique Task IDs
-Every task must have a unique ID.
+### 2.2. Amendment Procedure
+Proposed amendments must be submitted as a pull request, reviewed by at least two core contributors, and approved by a majority.
 
-### VIII. Graceful Invalid Input Handling
-The app must handle invalid input gracefully.
+### 2.3. Compliance Review
+All major releases and significant feature implementations will include a review against the current constitution to ensure adherence.
 
-### IX. Clear User Interaction
-Clear user prompts and outputs are required.
+## 3. Document Details
 
-## Non-Goals
-
-- No GUI
-- No web framework
-- No database
-- No authentication
-
-## Quality Bar
-
-- Code must be beginner-friendly.
-- Functions must be small and clear.
-- Output must be easy to understand.
-
-## Governance
-Constitution supersedes all other practices; Amendments require documentation, approval, migration plan. All PRs/reviews must verify compliance; Complexity must be justified.
-
-**Version**: 0.1.0 | **Ratified**: 2025-12-27 | **Last Amended**: 2025-12-27
+- **PROJECT_NAME:** Todo CLI App
+- **CONSTITUTION_VERSION:** 0.1.0
+- **RATIFICATION_DATE:** 2026-01-08
+- **LAST_AMENDED_DATE:** 2026-01-08
