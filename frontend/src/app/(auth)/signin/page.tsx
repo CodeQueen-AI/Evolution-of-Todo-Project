@@ -91,12 +91,14 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { useAuth } from '@/hooks/useAuth'
 
 export default function SignInPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const auth = useAuth(); // Use the useAuth hook
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -118,8 +120,8 @@ export default function SignInPage() {
       const data = await res.json();
       console.log('Sign In successful:', data);
 
-      // ✅ Save token in localStorage
-      localStorage.setItem('token', data.access_token);
+      // ✅ Use auth.signIn to save token and update auth context
+      auth.signIn(data.access_token, email);
 
       // ✅ Redirect user to tasks page
       router.push('/tasks');
@@ -177,3 +179,9 @@ export default function SignInPage() {
     </div>
   );
 }
+
+
+
+
+
+

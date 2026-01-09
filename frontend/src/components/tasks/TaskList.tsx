@@ -1,8 +1,10 @@
+'use client'
 import React from 'react';
 import useSWR from 'swr';
 import { Task } from '@/lib/types';
 import { TaskCard } from './TaskCard';
 import fetcher from '@/services/api';
+import { useAuth } from '@/hooks/useAuth'; // Import useAuth
 
 interface TaskListProps {
   filter?: 'all' | 'completed' | 'pending';
@@ -10,9 +12,21 @@ interface TaskListProps {
 }
 
 export const TaskList: React.FC<TaskListProps> = ({ filter = 'all', sortBy = 'created_at' }) => {
-  const { data: tasks, error, isLoading, mutate } = useSWR<Task[]>('/tasks', fetcher);
+  const { isAuthenticated, user } = useAuth(); // Get isAuthenticated and user from useAuth
+
+  // Custom fetcher that includes the token for authenticated requests
+  const authenticatedFetcher = (url: string) => {
+    return fetcher(url); // fetcher in api.ts now handles token automatically
+  };
+
+  const { data: tasks, error, isLoading, mutate } = useSWR<Task[]>(
+    isAuthenticated && user ? `/api/${user.email}/tasks` : null, // Only fetch if isAuthenticated and user exists
+    authenticatedFetcher
+  );
 
   const handleToggleComplete = async (taskId: number, completed: boolean) => {
+    if (!isAuthenticated || !user) return; // Prevent action if not authenticated or user is null
+
     // Optimistic update
     const updatedTasks = tasks?.map(task =>
       task.id === taskId ? { ...task, completed } : task
@@ -21,9 +35,8 @@ export const TaskList: React.FC<TaskListProps> = ({ filter = 'all', sortBy = 'cr
 
     try {
       // Call API to update task completion
-      await fetcher(`/tasks/${taskId}`, {
-        method: 'PUT',
-        body: JSON.stringify({ completed }),
+      await fetcher(`/api/${user.email}/tasks/${taskId}/complete`, { // Use specific toggle endpoint
+        method: 'PATCH', // Use PATCH method for toggling
       });
       mutate(); // Revalidate cache after successful API call
     } catch (err) {
@@ -33,13 +46,15 @@ export const TaskList: React.FC<TaskListProps> = ({ filter = 'all', sortBy = 'cr
   };
 
   const handleDelete = async (taskId: number) => {
+    if (!isAuthenticated || !user) return; // Prevent action if not authenticated or user is null
+
     // Optimistic update
     const updatedTasks = tasks?.filter(task => task.id !== taskId);
     mutate(updatedTasks, false);
 
     try {
       // Call API to delete task
-      await fetcher(`/tasks/${taskId}`, {
+      await fetcher(`/api/${user.email}/tasks/${taskId}`, { // Use user.email in the path
         method: 'DELETE',
       });
       mutate(); // Revalidate cache after successful API call
