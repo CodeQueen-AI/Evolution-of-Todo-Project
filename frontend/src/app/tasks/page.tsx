@@ -217,7 +217,7 @@
 import React, { useEffect, useState } from 'react';
 import { TaskList } from '@/components/tasks/TaskList';
 import { TaskForm } from '@/components/tasks/TaskForm';
-import { Navbar } from '@/components/layout/Navbar';
+import { Navbar } from '@/components/Navbar';
 import { TaskControls } from '@/components/tasks/TaskControls';
 import fetcher from '@/services/api';
 import { useAuth } from '@/hooks/useAuth';

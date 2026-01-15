@@ -250,6 +250,9 @@ With multiple developers:
 - Stop at any checkpoint to validate story independently
 - Avoid: vague tasks, same file conflicts, cross-story dependencies that break independence
 - Adhere to Project Constitution principles:
-  - **Modularity:** Design tasks to build modular components with clear interfaces.
-  - **Testability:** Ensure tasks contribute to features that are easily testable.
-  - **Maintainability:** Focus on clear, readable code and good documentation within each task.
+  - **Spec-Driven Development:** All tasks must correspond to a requirement in the specification.
+  - **Custom Frontend UI:** Tasks for the UI must use Next.js and Tailwind CSS.
+  - **AI as an Interface:** AI-related tasks should focus on intent recognition and tool invocation.
+  - **Stateless Backend:** Backend tasks must not introduce state.
+  - **User Ownership & Security:** Tasks must handle authentication and authorization correctly.
+  - **Tool-Driven AI Behavior:** AI behavior must be implemented through tool calls.

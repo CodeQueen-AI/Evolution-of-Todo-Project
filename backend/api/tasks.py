@@ -190,4 +190,3 @@ async def toggle_task_completion_endpoint(
     return toggled_task
 
 
-

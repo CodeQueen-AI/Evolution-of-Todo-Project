@@ -1,43 +1,34 @@
-# Frontend Specs – Todo App Phase II
+# Backend Specs – Todo App Phase II
 
 Purpose:
-- Provide user interface for authentication, task CRUD, filtering, and sorting.
-- Use Better Auth for signup/signin and JWT management.
-- Built with Next.js 16+ App Router, TypeScript, and Tailwind CSS.
-- Ensure only authenticated users can access tasks.
+- Handle all data operations, and validation
+- Ensure task ownership and secure endpoints via JWT.
+- Store all tasks persistently in PostgreSQL (Neon Serverless)
 
-Pages:
-- /signup → displays Better Auth signup form, redirects to /tasks after signup
-- /signin → displays Better Auth signin form, redirects to /tasks after login
-- /tasks → displays TaskList + TaskForm, supports filtering & sorting, auth required
-- /tasks/[id] → displays single TaskCard with edit/delete/complete actions, only owner can access
+Tasks:
+- id: integer (primary key)
+- user_id: string (foreign key to users.id)
+- title: string (required, 1-200 characters)
+- description: string (optional, max 1000 characters)
+- completed: boolean (default false)
+- created_at: timestamp
+- updated_at: timestamp
 
-UI Components:
-- Auth Components:
-  - SignUpForm: uses Better Auth (name, email, password)
-  - SignInForm: uses Better Auth (email, password)
-  - AuthGuard: protects private routes using Better Auth JWT
+Indexes:
+- tasks.user_id → for filtering tasks by user
+- tasks.completed → for status filtering
 
-- Task Components:
-  - TaskCard: shows title, description, status, created/updated date
-  - TaskForm: create or update task
-  - TaskList: displays TaskCards, supports filtering and sorting
-  - CompleteToggle: toggle completion of task
+API Endpoints:
+- GET /api/{user_id}/tasks → list all tasks for the user, filter by status and sort
+- POST /api/{user_id}/tasks → create a new task
+- GET /api/{user_id}/tasks/{id} → get details of a task, only if owned by user
+- PUT /api/{user_id}/tasks/{id} → update task title/description, only owner
+- DELETE /api/{user_id}/tasks/{id} → delete a task, only owner
+- PATCH /api/{user_id}/tasks/{id}/complete → toggle task completion, only owner
 
-- Layout Components:
-  - Navbar: user info from Better Auth + logout button
-  - Footer: copyright and info
-
-Styling:
-- Use Tailwind CSS for professional, responsive styling
-- Ensure consistent spacing, colors, and typography
-- Forms and buttons must have hover/focus effects
-- TaskCard visually indicates completed vs pending tasks
-
-Rules:
-- Validate form inputs before submission
-- Display success and error messages for all actions
-- Only authenticated users can access task pages
-- Integrate fully with Next.js 16+ App Router (use server components if needed)
-- JWT token from Better Auth included in Authorization header for backend calls
+Validation Rules:
+- Title: 1-200 characters
+- Description: optional, max 1000 characters
+- JWT token required for all endpoints, expires in 7 days
+- Unauthorized or invalid access → return 401/403
 

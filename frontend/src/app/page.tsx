@@ -1,0 +1,14 @@
+'use client'
+// import Navbar from '../components/layout/Navbar'
+import { Navbar } from '@/components/Navbar'
+import Home  from '@/components/Home'
+
+export default function page() {
+  return (
+    <div>
+    {/* <h1>Hello World</h1> */}
+    <Navbar/>
+    <Home/>
+    </div>
+  );
+}

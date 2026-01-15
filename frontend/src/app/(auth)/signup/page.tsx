@@ -1,114 +1,24 @@
-// 'use client'
-// import React, { useState } from 'react';
-// import { useRouter } from 'next/navigation';
-// import { Input } from '@/components/ui/Input';
-// import { Button } from '@/components/ui/Button';
-// import { signUp } from '@/services/auth';
-
-// export default function SignUpPage() {
-//   const [name, setName] = useState('');
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [error, setError] = useState<string | null>(null);
-//   const router = useRouter();
-
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault();
-//     setError(null);
-//     try {
-//       const response = await signUp(name, email, password);
-//       console.log('Sign Up successful:', response);
-//       // In a real app, useAuth.signIn would handle setting token and user
-//       // For now, redirect manually
-//       router.push('/tasks');
-//     } catch (err: any) {
-//       setError(err.message || 'Failed to sign up');
-//       console.error('Sign Up error:', err);
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-//       <div className="max-w-md w-full space-y-8">
-//         <div>
-//           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-//             Create your account
-//           </h2>
-//         </div>
-//         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-//           <div className="rounded-md shadow-sm -space-y-px">
-//             <div>
-//               <Input
-//                 id="name"
-//                 name="name"
-//                 type="text"
-//                 autoComplete="name"
-//                 required
-//                 placeholder="Full Name"
-//                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-//                 value={name}
-//                 onChange={(e) => setName(e.target.value)}
-//               />
-//             </div>
-//             <div>
-//               <Input
-//                 id="email-address"
-//                 name="email"
-//                 type="email"
-//                 autoComplete="email"
-//                 required
-//                 placeholder="Email address"
-//                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-//                 value={email}
-//                 onChange={(e) => setEmail(e.target.value)}
-//               />
-//             </div>
-//             <div>
-//               <Input
-//                 id="password"
-//                 name="password"
-//                 type="password"
-//                 autoComplete="new-password"
-//                 required
-//                 placeholder="Password"
-//                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-//                 value={password}
-//                 onChange={(e) => setPassword(e.target.value)}
-//               />
-//             </div>
-//           </div>
-
-//           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-
-//           <div>
-//             <Button
-//               type="submit"
-//               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-//             >
-//               Sign up
-//             </Button>
-//           </div>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// }
 
 
+'use client';
 
-
-
-'use client'
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Input } from '@/components/ui/Input';
-import { Button } from '@/components/ui/Button';
+import { Poppins } from 'next/font/google';
+import { Eye, EyeOff } from 'lucide-react';
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600'],
+});
 
 export default function SignUpPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -116,7 +26,6 @@ export default function SignUpPage() {
     setError(null);
 
     try {
-      // Call backend signup endpoint
       const res = await fetch('http://localhost:8000/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -129,75 +38,125 @@ export default function SignUpPage() {
       }
 
       const data = await res.json();
-      console.log('Sign Up successful:', data);
-
-      // ✅ Save token in localStorage
       localStorage.setItem('token', data.access_token);
-
-      // ✅ Redirect user to tasks page
       router.push('/tasks');
     } catch (err: any) {
       setError(err.message || 'Failed to sign up');
-      console.error('Sign Up error:', err);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Create your account
-          </h2>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
+    <div className={`${poppins.className} min-h-screen bg-black flex`}>
+      
+      {/* Form Section */}
+      <div className="w-full md:w-1/2 flex items-center justify-center px-10">
+        <div className="w-full max-w-md">
+
+          {/* <h2 className="text-4xl font-semibold text-white mb-10">
+            Create Your Account
+          </h2> */}
+          <h2 className="text-4xl font-semibold text-white mb-10 text-center">
+  Create Your Account
+</h2>
+
+
+          <form onSubmit={handleSubmit} className="space-y-8">
+
+            {/* Name */}
             <div>
-              <Input
-                id="name"
-                name="name"
+              <label className="text-white text-sm">Name</label>
+              <input
                 type="text"
-                autoComplete="name"
                 required
-                placeholder="Full Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                className="w-full bg-transparent border-b border-gray-600 text-white py-2 focus:outline-none focus:border-white"
               />
             </div>
+
+            {/* Email */}
             <div>
-              <Input
-                id="email-address"
-                name="email"
+              <label className="text-white text-sm">Email</label>
+              <input
                 type="email"
-                autoComplete="email"
                 required
-                placeholder="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-transparent border-b border-gray-600 text-white py-2 focus:outline-none focus:border-white"
               />
             </div>
-            <div>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="new-password"
+
+            {/* Password with Eye Icon */}
+            <div className="relative">
+              <label className="text-white text-sm">Password</label>
+              <input
+                type={showPassword ? 'text' : 'password'}
                 required
-                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className="w-full bg-transparent border-b border-gray-600 text-white py-2 pr-10 focus:outline-none focus:border-white"
               />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-0 top-8 text-purple-400 hover:text-purple-300"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
             </div>
-          </div>
 
-          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+            {error && (
+              <p className="text-red-500 text-sm">{error}</p>
+            )}
 
-          <div>
-            <Button type="submit" className="w-full">
-              Sign up
-            </Button>
-          </div>
-        </form>
+            {/* Button + Login */}
+            <div className="flex flex-col items-center gap-6 pt-6">
+              <button
+                type="submit"
+                className="
+                  w-2/3
+                  h-14
+                  rounded-full
+                  bg-purple-600
+                  text-white
+                  border
+                  border-purple-600
+                  font-medium
+                  transition-all
+                  duration-300
+                  shadow-[0_0_20px_rgba(168,85,247,0.6)]
+                  hover:bg-white
+                  hover:text-purple-600
+                  hover:border-purple-600
+                  hover:shadow-[0_0_30px_rgba(168,85,247,0.9)]
+                "
+              >
+                Sign Up
+              </button>
+
+              <p className="text-white text-sm">
+                Already have an account?{' '}
+                <span
+                  onClick={() => router.push('/signin')}
+                  className="text-purple-400 cursor-pointer hover:underline"
+                >
+                  Log in
+                </span>
+              </p>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      {/* Image Section */}
+      <div className="hidden md:flex w-1/2 items-center justify-center">
+        <img
+          src="/signup-image.png"
+          alt="Signup"
+          className="w-[75%] object-contain"
+        />
       </div>
     </div>
   );

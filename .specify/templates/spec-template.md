@@ -97,9 +97,12 @@
 
 ### Architectural Considerations (Aligned with Project Constitution)
 
-- **Modularity**: Requirements should implicitly support a modular design, allowing for independent development and testing of components.
-- **Testability**: All functional requirements must be clearly defined such that they are verifiable through automated tests.
-- **Maintainability**: Requirements should promote clear, concise, and well-structured code.
+- **Spec-Driven Development:** All requirements must be captured in this specification before implementation.
+- **Custom Frontend UI:** The UI must be designed for Next.js and Tailwind CSS, avoiding ChatKit.
+- **AI as an Interface:** Requirements should treat AI as an interface, with business logic in services.
+- **Stateless Backend:** The backend architecture must be designed to be stateless.
+- **User Ownership & Security:** All requirements must respect user ownership and include security considerations.
+- **Tool-Driven AI Behavior:** AI interactions with the system must be defined in terms of tool calls.
 
 ### Key Entities *(include if feature involves data)*
 

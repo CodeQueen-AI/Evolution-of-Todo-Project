@@ -1,0 +1,82 @@
+## 🔹 Constitution: Todo App – Phase III (AI-Powered Todo Chatbot) **[Updated]**
+
+### Purpose
+
+This constitution defines the principles, rules, and constraints for **Phase III** of the Todo application.
+The goal is to evolve the Phase II full-stack web app into an **AI-powered conversational Todo chatbot** using **spec-driven development**, where the chatbot UI is built using **Next.js and Tailwind CSS**, and connects to a **FastAPI AI backend**.
+
+
+### Core Principles
+
+1. **Spec-Driven Development Only**
+
+   * No chatbot, AI, or MCP feature may be implemented without a written specification.
+   * Gemini CLI must generate all implementation code.
+   * Manual coding is **not allowed**.
+
+2. **Custom Frontend UI (No ChatKit)**
+
+   * Chat UI must be built using **Next.js 16+ App Router** and **Tailwind CSS**.
+   * No OpenAI ChatKit or prebuilt chatbot UI libraries may be used.
+   * Frontend only handles UI and user interaction.
+
+3. **AI as an Interface, Not Logic**
+
+   * AI does not contain business logic.
+   * All task logic lives in MCP tools and backend services.
+   * AI only interprets intent and invokes tools.
+
+4. **Stateless Backend Architecture**
+
+   * FastAPI backend must remain stateless.
+   * Conversation state must be stored in the database.
+   * Server restarts must not affect chat continuity.
+
+5. **User Ownership & Security**
+
+   * All chatbot interactions require JWT authentication (Better Auth).
+   * AI can only act on tasks belonging to the authenticated user.
+
+6. **Tool-Driven AI Behavior**
+
+   * AI can interact with the system **only via MCP tools**.
+   * Direct database access by AI is forbidden.
+
+### Scope of Phase III
+
+**Included**
+
+* Custom chat UI using Next.js + Tailwind CSS
+* FastAPI AI chat backend
+* OpenAI Agents SDK
+* Official MCP SDK
+* Natural language todo management
+* Persistent conversations
+
+**Excluded**
+
+* ChatKit
+* Kubernetes
+* Kafka / Dapr
+* Voice input
+
+
+### Success Criteria
+
+Phase III is complete when:
+
+* Users chat via a custom Next.js UI
+* Messages are sent to FastAPI backend
+* AI manages tasks via MCP tools
+* Conversation persists after refresh
+* JWT auth & user isolation enforced
+* All code generated via specs
+
+
+
+### Non-Negotiable Rules
+
+* Specs are the source of truth
+* Gemini CLI only
+* No ChatKit
+* MCP tools only

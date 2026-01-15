@@ -4,7 +4,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import useSWR from 'swr';
 import { Task } from '@/lib/types';
-import { Navbar } from '@/components/layout/Navbar';
+import { Navbar } from '@/components/Navbar';
 import { TaskForm } from '@/components/tasks/TaskForm';
 import { CompleteToggle } from '@/components/tasks/CompleteToggle';
 import fetcher from '@/services/api';
