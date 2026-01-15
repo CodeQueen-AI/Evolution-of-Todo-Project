@@ -16,8 +16,8 @@
 
 **Purpose**: Core infrastructure for the AI Chat Service.
 
-- [ ] T003 Create database migration for `Conversation` and `Message` tables using Alembic in `backend/alembic/versions/`.
-- [ ] T004 Create `Conversation` and `Message` SQLAlchemy models in a new file `backend/models/chat.py`.
+- [X] T003 Create database migration for `Conversation` and `Message` tables using Alembic in `backend/alembic/versions/`.
+- [X] T004 Create `Conversation` and `Message` SQLAlchemy models in a new file `backend/models/chat.py`.
 
 ---
 
@@ -29,11 +29,11 @@
 
 ### Implementation for User Story 1
 
-- [ ] T005 [US1] Create `ChatRepository` in `backend/services/chat_repository.py` with methods to create/get conversations and messages.
-- [ ] T006 [US1] Implement `ChatService` in `backend/services/chat_service.py` to handle the logic of processing messages.
-- [ ] T007 [US1] Create the `POST /api/{user_id}/chat` endpoint in a new file `backend/api/chat.py`.
-- [ ] T008 [US1] Integrate JWT authentication and user ownership checks in the `POST /api/{user_id}/chat` endpoint.
-- [ ] T009 [US1] Integrate the AI agent in `ChatService` to process messages and generate responses, including calling MCP tools.
+- [X] T005 [US1] Create `ChatRepository` in `backend/services/chat_repository.py` with methods to create/get conversations and messages.
+- [X] T006 [US1] Implement `ChatService` in `backend/services/chat_service.py` to handle the logic of processing messages.
+- [X] T007 [US1] Create the `POST /api/{user_id}/chat` endpoint in a new file `backend/api/chat.py`.
+- [X] T008 [US1] Integrate JWT authentication and user ownership checks in the `POST /api/{user_id}/chat` endpoint.
+- [X] T009 [US1] Integrate the AI agent in `ChatService` to process messages and generate responses, including calling MCP tools.
 
 **Checkpoint**: User Story 1 should be fully functional and testable.
 
@@ -47,10 +47,10 @@
 
 ### Implementation for User Story 2
 
-- [ ] T010 [US2] Add `get_conversation_history` method to `ChatRepository` in `backend/services/chat_repository.py`.
-- [ ] T011 [US2] Add method to `ChatService` in `backend/services/chat_service.py` to retrieve conversation history.
-- [ ] T012 [US2] Implement the `GET /api/{user_id}/chat/{conversation_id}/history` endpoint in `backend/api/chat.py`.
-- [ ] T013 [US2] Add JWT authentication and user ownership checks to the `GET` endpoint.
+- [X] T010 [US2] Add `get_conversation_history` method to `ChatRepository` in `backend/services/chat_repository.py`.
+- [X] T011 [US2] Add method to `ChatService` in `backend/services/chat_service.py` to retrieve conversation history.
+- [X] T012 [US2] Implement the `GET /api/{user_id}/chat/{conversation_id}/history` endpoint in `backend/api/chat.py`.
+- [X] T013 [US2] Add JWT authentication and user ownership checks to the `GET` endpoint.
 
 **Checkpoint**: User Stories 1 AND 2 should both work independently.
 
@@ -64,8 +64,8 @@
 
 ### Implementation for User Story 3
 
-- [ ] T014 [US3] Create integration tests in `tests/integration/test_api_chat.py` to verify all security scenarios for the chat endpoints.
-- [ ] T015 [US3] Manually verify that all error responses for security violations are correct and informative.
+- [X] T014 [US3] Create integration tests in `tests/integration/test_api_chat.py` to verify all security scenarios for the chat endpoints.
+- [X] T015 [US3] Manually verify that all error responses for security violations are correct and informative.
 
 **Checkpoint**: All user stories should now be independently functional and secure.
 

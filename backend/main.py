@@ -239,7 +239,7 @@ import logging
 
 # Local imports
 from logging_config import setup_logging
-from api import tasks, auth
+from api import tasks, auth, chat
 
 # Setup logging
 setup_logging()
@@ -270,6 +270,7 @@ app.add_middleware(
 # =========================
 app.include_router(auth.router, prefix="/auth", tags=["auth"])  # Fixed: Added /auth prefix
 app.include_router(tasks.router, prefix="/api", tags=["tasks"])
+app.include_router(chat.router, prefix="", tags=["chat"])
 
 # =========================
 # EVENTS
