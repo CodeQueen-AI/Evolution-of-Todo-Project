@@ -2,9 +2,14 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Optional
 
-from backend.database import get_db # Assuming get_db is defined here
-from backend.services.chat_service import ChatService
-from backend.middleware.auth import get_current_user_id # Assuming auth middleware exists
+# from backend.database import get_db # Assuming get_db is defined here
+# from backend.services.chat_service import ChatService
+# from backend.middleware.auth import get_current_user_id # Assuming auth middleware exists
+
+from database import get_db # Assuming get_db is defined here
+from services.chat_service import ChatService
+from middleware.auth import get_current_user_id # Assuming auth middleware exists
+
 
 router = APIRouter()
 

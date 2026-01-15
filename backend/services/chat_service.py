@@ -1,7 +1,7 @@
 from typing import List, Optional
 from sqlalchemy.ext.asyncio import AsyncSession
-from backend.models.chat import Conversation, Message
-from backend.services.chat_repository import ChatRepository
+from models.chat import Conversation, Message
+from services.chat_repository import ChatRepository
 
 class ChatService:
     def __init__(self, session: AsyncSession):
