@@ -1,0 +1,78 @@
+openapi: 3.0.0
+info:
+  title: AI Chat Service API
+  version: 1.0.0
+paths:
+  /api/{user_id}/chat:
+    post:
+      summary: Send a message to the AI chat service
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                conversation_id:
+                  type: integer
+                message:
+                  type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  conversation_id:
+                    type: integer
+                  response:
+                    type: string
+                  tool_calls:
+                    type: array
+                    items:
+                      type: object
+  /api/{user_id}/chat/{conversation_id}/history:
+    get:
+      summary: Retrieve conversation history
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+        - in: path
+          name: conversation_id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    conversation_id:
+                      type: integer
+                    user_id:
+                      type: integer
+                    role:
+                      type: string
+                    content:
+                      type: string
+                    created_at:
+                      type: string
+                      format: date-time

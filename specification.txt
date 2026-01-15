@@ -1,34 +1,99 @@
-# Backend Specs – Todo App Phase II
+## Backend Specs – AI Chat Service (FastAPI)
 
-Purpose:
-- Handle all data operations, and validation
-- Ensure task ownership and secure endpoints via JWT.
-- Store all tasks persistently in PostgreSQL (Neon Serverless)
+### Purpose
 
-Tasks:
-- id: integer (primary key)
-- user_id: string (foreign key to users.id)
-- title: string (required, 1-200 characters)
-- description: string (optional, max 1000 characters)
-- completed: boolean (default false)
-- created_at: timestamp
-- updated_at: timestamp
+* Handle chat messages
+* Run AI agent
+* Invoke MCP tools
+* Persist conversation history
+* Remain stateless
 
-Indexes:
-- tasks.user_id → for filtering tasks by user
-- tasks.completed → for status filtering
 
-API Endpoints:
-- GET /api/{user_id}/tasks → list all tasks for the user, filter by status and sort
-- POST /api/{user_id}/tasks → create a new task
-- GET /api/{user_id}/tasks/{id} → get details of a task, only if owned by user
-- PUT /api/{user_id}/tasks/{id} → update task title/description, only owner
-- DELETE /api/{user_id}/tasks/{id} → delete a task, only owner
-- PATCH /api/{user_id}/tasks/{id}/complete → toggle task completion, only owner
+### Chat API
 
-Validation Rules:
-- Title: 1-200 characters
-- Description: optional, max 1000 characters
-- JWT token required for all endpoints, expires in 7 days
-- Unauthorized or invalid access → return 401/403
+*Endpoint*
+
+
+POST /api/{user_id}/chat
+
+
+*Request*
+
+json
+{
+  "conversation_id": optional integer,
+  "message": string
+}
+
+
+*Response*
+
+json
+{
+  "conversation_id": integer,
+  "response": string,
+  "tool_calls": array
+}
+
+
+
+### Database Models
+
+*Conversation*
+
+* id
+* user_id
+* created_at
+* updated_at
+
+*Message*
+
+* id
+* conversation_id
+* user_id
+* role (user | assistant)
+* content
+* created_at
+
+
+## MCP Tools Specification
+
+(same as before — no change)
+
+* add_task
+* list_tasks
+* update_task
+* complete_task
+* delete_task
+
+👉 All tools enforce user ownership.
+
+## Agent Behavior Rules
+
+* Interpret user intent
+* Call MCP tools only
+* Confirm actions naturally
+* Handle missing or invalid tasks gracefully
+
+
+
+## Stateless Conversation Flow
+
+1. Frontend sends message
+2. Backend loads conversation from DB
+3. User message stored
+4. Agent runs with MCP tools
+5. Tool calls executed
+6. Assistant reply stored
+7. Response returned
+8. No server memory retained
+
+
+
+## Security Rules
+
+* JWT required
+* user_id from token must match route
+* Unauthorized → 401 / 403
+* AI never sees other users’ data
 
