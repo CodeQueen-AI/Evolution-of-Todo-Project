@@ -1,35 +1,3 @@
-// import React, { useState } from 'react';
-
-// interface CompleteToggleProps {
-//   taskId: number;
-//   initialCompleted: boolean;
-//   onToggle: (taskId: number, completed: boolean) => void;
-// }
-
-// export const CompleteToggle: React.FC<CompleteToggleProps> = ({
-//   taskId,
-//   initialCompleted,
-//   onToggle,
-// }) => {
-//   const [completed, setCompleted] = useState(initialCompleted);
-
-//   const handleToggle = () => {
-//     const newStatus = !completed;
-//     setCompleted(newStatus);
-//     onToggle(taskId, newStatus);
-//   };
-
-//   return (
-//     <button
-//       onClick={handleToggle}
-//       className={`px-3 py-1 rounded-full text-sm font-medium ${
-//         completed ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-//       }`}
-//     >
-//       {completed ? 'Completed' : 'Pending'}
-//     </button>
-//   );
-// };
 'use client';
 
 import React, { useState } from 'react';
