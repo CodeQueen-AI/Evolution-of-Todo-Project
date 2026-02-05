@@ -2,6 +2,7 @@
 // import Navbar from '../components/layout/Navbar'
 import { Navbar } from '@/components/Navbar'
 import Home  from '@/components/Home'
+import Feature from '@/components/Features'
 
 export default function page() {
   return (
@@ -9,6 +10,7 @@ export default function page() {
     {/* <h1>Hello World</h1> */}
     <Navbar/>
     <Home/>
+    <Feature/>
     </div>
   );
 }
