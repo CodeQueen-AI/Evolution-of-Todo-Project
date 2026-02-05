@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from backend.models.chat import Conversation, Message
+from models.chat import Conversation, Message
 from datetime import datetime
 
 class ChatRepository:
