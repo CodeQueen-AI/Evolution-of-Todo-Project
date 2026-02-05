@@ -50,7 +50,10 @@ const TasksPage = () => {
     <div className="min-h-screen bg-black font-poppins text-white">
       <Navbar />
       <main className="container mx-auto py-8">
-        <h1 className="text-3xl font-extrabold text-white mb-6">My Tasks</h1>
+  <h1 className="text-3xl font-extrabold text-white mb-6 text-center">
+  My Tasks
+</h1>
+
 
         {/* Task Form */}
         <TaskForm
