@@ -119,7 +119,7 @@ export default function SignInPage() {
                   hover:shadow-[0_0_30px_rgba(168,85,247,0.9)]
                 "
               >
-                Sign In
+                Log In
               </button>
 
               <p className="text-white text-sm">
