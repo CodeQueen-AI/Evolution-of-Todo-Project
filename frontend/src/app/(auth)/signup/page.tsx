@@ -153,7 +153,7 @@ export default function SignUpPage() {
       {/* Image Section */}
       <div className="hidden md:flex w-1/2 items-center justify-center">
         <img
-          src="/signup-image.png"
+          src="/Img.avif"
           alt="Signup"
           className="w-[75%] object-contain"
         />
