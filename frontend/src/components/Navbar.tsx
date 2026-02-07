@@ -44,7 +44,7 @@ export const Navbar = () => {
           <Link href="#how-it-works" className="hover:text-white transition">
             How It Works
           </Link>
-          <Link href="#ai-chatbot" className="hover:text-white transition">
+          <Link href="/chatbot" className="hover:text-white transition">
             AI Chatbot
           </Link>
         </div>
