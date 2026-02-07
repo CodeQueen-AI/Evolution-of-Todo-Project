@@ -1,147 +1,178 @@
 import pytest
-from src.models.task import Task
-from src.services.task_repository import TaskRepository
-from src.services.task_service import TaskService
+from datetime import datetime, timezone
+from unittest.mock import AsyncMock, MagicMock
+from sqlalchemy.ext.asyncio import AsyncSession
+from backend.models.task import Task
+from backend.services.task_service import TaskService
+from sqlalchemy import select
 
 @pytest.fixture
-def task_repo():
-    repo = TaskRepository()
-    repo.clear() # Ensure a clean state for each test
-    return repo
+def mock_db_session():
+    return AsyncMock(spec=AsyncSession)
 
-def test_add_task_success(task_repo):
-    service = TaskService(task_repo)
-    task = service.add_task("Buy groceries", "Milk, eggs")
+@pytest.fixture
+def task_service(mock_db_session):
+    return TaskService(mock_db_session)
+
+@pytest.mark.asyncio
+async def test_create_task(task_service, mock_db_session):
+    user_id = "test_user"
+    title = "Test Task"
+    description = "Test Description"
+
+    mock_db_session.add.return_value = None
+    mock_db_session.commit.return_value = None
+    mock_db_session.refresh.side_effect = lambda obj: setattr(obj, 'id', 1)
+
+    task = await task_service.create_task(user_id, title, description)
+
+    mock_db_session.add.assert_called_once()
+    mock_db_session.commit.assert_called_once()
+    mock_db_session.refresh.assert_called_once_with(task)
+
+    assert task.user_id == user_id
+    assert task.title == title
+    assert task.description == description
     assert task.id == 1
-    assert task.title == "Buy groceries"
-    assert task.description == "Milk, eggs"
     assert not task.completed
+    assert isinstance(task.created_at, datetime)
+    assert isinstance(task.updated_at, datetime)
 
-    tasks = task_repo.get_all()
-    assert len(tasks) == 1
-    assert tasks[0] == task
 
-def test_add_task_empty_title_raises_error(task_repo):
-    service = TaskService(task_repo)
-    with pytest.raises(ValueError, match="Title cannot be empty."):
-        service.add_task("", "Description")
-    assert len(task_repo.get_all()) == 0
+@pytest.mark.asyncio
+async def test_get_tasks_all(task_service, mock_db_session):
+    user_id = "test_user"
+    tasks_data = [
+        Task(id=1, user_id=user_id, title="Task 1", completed=False, created_at=datetime.now(timezone.utc)),
+        Task(id=2, user_id=user_id, title="Task 2", completed=True, created_at=datetime.now(timezone.utc)),
+    ]
 
-def test_get_all_tasks_empty(task_repo):
-    service = TaskService(task_repo)
-    tasks = service.get_all_tasks()
-    assert tasks == []
+    mock_result = MagicMock()
+    mock_result.scalars.return_value.all.return_value = tasks_data
+    mock_db_session.execute.return_value = mock_result
 
-def test_get_all_tasks_with_tasks(task_repo):
-    service = TaskService(task_repo)
-    service.add_task("Task 1")
-    service.add_task("Task 2", "Description 2")
-    tasks = service.get_all_tasks()
+    tasks = await task_service.get_tasks(user_id)
+
+    mock_db_session.execute.assert_called_once()
     assert len(tasks) == 2
     assert tasks[0].title == "Task 1"
     assert tasks[1].title == "Task 2"
 
-def test_update_task_success_title_and_description(task_repo):
-    service = TaskService(task_repo)
-    initial_task = service.add_task("Old Title", "Old Description")
-    
-    updated_task = service.update_task(initial_task.id, "New Title", "New Description")
-    assert updated_task is not None
-    assert updated_task.id == initial_task.id
+
+@pytest.mark.asyncio
+async def test_get_tasks_completed(task_service, mock_db_session):
+    user_id = "test_user"
+    tasks_data = [
+        Task(id=2, user_id=user_id, title="Task 2", completed=True, created_at=datetime.now(timezone.utc)),
+    ]
+
+    mock_result = MagicMock()
+    mock_result.scalars.return_value.all.return_value = tasks_data
+    mock_db_session.execute.return_value = mock_result
+
+    tasks = await task_service.get_tasks(user_id, completed=True)
+
+    mock_db_session.execute.assert_called_once()
+    assert len(tasks) == 1
+    assert tasks[0].title == "Task 2"
+    assert tasks[0].completed is True
+
+@pytest.mark.asyncio
+async def test_get_tasks_sorted_desc(task_service, mock_db_session):
+    user_id = "test_user"
+    task1 = Task(id=1, user_id=user_id, title="Task A", created_at=datetime(2023, 1, 1, tzinfo=timezone.utc))
+    task2 = Task(id=2, user_id=user_id, title="Task B", created_at=datetime(2023, 1, 2, tzinfo=timezone.utc))
+    tasks_data = [task2, task1] # Expecting descending order
+
+    mock_result = MagicMock()
+    mock_result.scalars.return_value.all.return_value = tasks_data
+    mock_db_session.execute.return_value = mock_result
+
+    tasks = await task_service.get_tasks(user_id, sort_by="created_at", order="desc")
+
+    mock_db_session.execute.assert_called_once()
+    assert len(tasks) == 2
+    assert tasks[0].title == "Task B"
+    assert tasks[1].title == "Task A"
+
+
+@pytest.mark.asyncio
+async def test_get_task_by_id_success(task_service, mock_db_session):
+    user_id = "test_user"
+    task_id = 1
+    task = Task(id=task_id, user_id=user_id, title="Test Task", created_at=datetime.now(timezone.utc))
+
+    mock_result = MagicMock()
+    mock_result.scalars.return_value.first.return_value = task
+    mock_db_session.execute.return_value = mock_result
+
+    found_task = await task_service.get_task_by_id(task_id, user_id)
+
+    mock_db_session.execute.assert_called_once()
+    assert found_task is not None
+    assert found_task.id == task_id
+    assert found_task.user_id == user_id
+
+
+@pytest.mark.asyncio
+async def test_get_task_by_id_not_found(task_service, mock_db_session):
+    user_id = "test_user"
+    task_id = 99
+
+    mock_result = MagicMock()
+    mock_result.scalars.return_value.first.return_value = None
+    mock_db_session.execute.return_value = mock_result
+
+    found_task = await task_service.get_task_by_id(task_id, user_id)
+
+    mock_db_session.execute.assert_called_once()
+    assert found_task is None
+
+
+@pytest.mark.asyncio
+async def test_update_task_title(task_service, mock_db_session):
+    user_id = "test_user"
+    task = Task(id=1, user_id=user_id, title="Old Title", created_at=datetime.now(timezone.utc))
+
+    mock_db_session.commit.return_value = None
+    mock_db_session.refresh.return_value = None
+
+    updated_task = await task_service.update_task(task, title="New Title")
+
+    mock_db_session.commit.assert_called_once()
+    mock_db_session.refresh.assert_called_once_with(task)
     assert updated_task.title == "New Title"
-    assert updated_task.description == "New Description"
-    assert service.get_all_tasks()[0] == updated_task
+    assert updated_task.user_id == user_id # Ensure user_id is unchanged
 
-def test_update_task_success_only_title(task_repo):
-    service = TaskService(task_repo)
-    initial_task = service.add_task("Old Title", "Old Description")
-    
-    updated_task = service.update_task(initial_task.id, "New Title", None)
-    assert updated_task is not None
-    assert updated_task.id == initial_task.id
-    assert updated_task.title == "New Title"
-    assert updated_task.description is None # Explicitly set to None
-    assert service.get_all_tasks()[0] == updated_task
 
-def test_update_task_success_only_description(task_repo):
-    service = TaskService(task_repo)
-    initial_task = service.add_task("Old Title", "Old Description")
-    
-    updated_task = service.update_task(initial_task.id, None, "New Description")
-    assert updated_task is not None
-    assert updated_task.id == initial_task.id
-    assert updated_task.title == "Old Title" # Should remain old title
-    assert updated_task.description == "New Description"
-    assert service.get_all_tasks()[0] == updated_task
+@pytest.mark.asyncio
+async def test_delete_task(task_service, mock_db_session):
+    user_id = "test_user"
+    task = Task(id=1, user_id=user_id, title="Task to Delete", created_at=datetime.now(timezone.utc))
 
-def test_update_task_not_found(task_repo):
-    service = TaskService(task_repo)
-    service.add_task("Existing Task")
-    
-    updated_task = service.update_task(99, "Non Existent", "Desc")
-    assert updated_task is None
-    assert len(service.get_all_tasks()) == 1 # No change to existing tasks
+    mock_db_session.delete.return_value = None
+    mock_db_session.commit.return_value = None
 
-def test_update_task_empty_title_raises_error(task_repo):
-    service = TaskService(task_repo)
-    initial_task = service.add_task("Valid Title")
-    
-    with pytest.raises(ValueError, match="Title cannot be empty."):
-        service.update_task(initial_task.id, "", "New Desc")
-    
-    # Verify task was not updated
-    retrieved_task = service.get_all_tasks()[0]
-    assert retrieved_task.title == "Valid Title"
+    await task_service.delete_task(task)
 
-def test_delete_task_success(task_repo):
-    service = TaskService(task_repo)
-    task1 = service.add_task("Task 1")
-    task2 = service.add_task("Task 2")
+    mock_db_session.delete.assert_called_once_with(task)
+    mock_db_session.commit.assert_called_once()
 
-    deleted = service.delete_task(task1.id)
-    assert deleted
-    assert service.get_all_tasks() == [task2]
 
-def test_delete_task_not_found(task_repo):
-    service = TaskService(task_repo)
-    service.add_task("Task 1")
+@pytest.mark.asyncio
+async def test_toggle_task_completion(task_service, mock_db_session):
+    user_id = "test_user"
+    task = Task(id=1, user_id=user_id, title="Task to Toggle", completed=False, created_at=datetime.now(timezone.utc))
 
-    deleted = service.delete_task(99)
-    assert not deleted
-    assert len(service.get_all_tasks()) == 1
+    mock_db_session.commit.return_value = None
+    mock_db_session.refresh.return_value = None
 
-def test_toggle_task_completion_to_complete(task_repo):
-    service = TaskService(task_repo)
-    task = service.add_task("Test Task")
-    assert not task.completed
+    toggled_task = await task_service.toggle_task_completion(task)
 
-    toggled_task = service.toggle_task_completion(task.id)
-    assert toggled_task is not None
-    assert toggled_task.completed
+    mock_db_session.commit.assert_called_once()
+    mock_db_session.refresh.assert_called_once_with(task)
+    assert toggled_task.completed is True
 
-    retrieved_task = service.repository.get_by_id(task.id)
-    assert retrieved_task.completed
-
-def test_toggle_task_completion_to_incomplete(task_repo):
-    service = TaskService(task_repo)
-    task = service.add_task("Test Task")
-    task.completed = True # Manually set to completed for initial state
-    service.repository.update(task) # Update in repo
-
-    assert service.repository.get_by_id(task.id).completed
-
-    toggled_task = service.toggle_task_completion(task.id)
-    assert toggled_task is not None
-    assert not toggled_task.completed
-
-    retrieved_task = service.repository.get_by_id(task.id)
-    assert not retrieved_task.completed
-
-def test_toggle_task_completion_not_found(task_repo):
-    service = TaskService(task_repo)
-    service.add_task("Existing Task")
-
-    toggled_task = service.toggle_task_completion(99)
-    assert toggled_task is None
-    assert len(service.get_all_tasks()) == 1
-
+    # Toggle again
+    toggled_task = await task_service.toggle_task_completion(toggled_task)
+    assert toggled_task.completed is False

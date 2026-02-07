@@ -95,6 +95,15 @@
 - **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
 - **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
 
+### Architectural Considerations (Aligned with Project Constitution)
+
+- **Spec-Driven Development:** All requirements must be captured in this specification before implementation.
+- **Custom Frontend UI:** The UI must be designed for Next.js and Tailwind CSS, avoiding ChatKit.
+- **AI as an Interface:** Requirements should treat AI as an interface, with business logic in services.
+- **Stateless Backend:** The backend architecture must be designed to be stateless.
+- **User Ownership & Security:** All requirements must respect user ownership and include security considerations.
+- **Tool-Driven AI Behavior:** AI interactions with the system must be defined in terms of tool calls.
+
 ### Key Entities *(include if feature involves data)*
 
 - **[Entity 1]**: [What it represents, key attributes without implementation]

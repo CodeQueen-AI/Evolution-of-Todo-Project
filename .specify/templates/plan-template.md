@@ -31,7 +31,12 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] **Spec-Driven Development:** Ensure all features are implemented from a specification.
+- [ ] **Custom Frontend UI:** Verify that the UI is built with Next.js and Tailwind CSS, and does not use ChatKit.
+- [ ] **AI as an Interface:** Confirm that AI does not contain business logic and only invokes tools.
+- [ ] **Stateless Backend:** Ensure the backend architecture remains stateless.
+- [ ] **User Ownership & Security:** Verify that all interactions are authenticated and authorized.
+- [ ] **Tool-Driven AI Behavior:** Confirm that the AI interacts with the system only through MCP tools.
 
 ## Project Structure
 

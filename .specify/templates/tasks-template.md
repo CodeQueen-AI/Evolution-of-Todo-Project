@@ -249,3 +249,10 @@ With multiple developers:
 - Commit after each task or logical group
 - Stop at any checkpoint to validate story independently
 - Avoid: vague tasks, same file conflicts, cross-story dependencies that break independence
+- Adhere to Project Constitution principles:
+  - **Spec-Driven Development:** All tasks must correspond to a requirement in the specification.
+  - **Custom Frontend UI:** Tasks for the UI must use Next.js and Tailwind CSS.
+  - **AI as an Interface:** AI-related tasks should focus on intent recognition and tool invocation.
+  - **Stateless Backend:** Backend tasks must not introduce state.
+  - **User Ownership & Security:** Tasks must handle authentication and authorization correctly.
+  - **Tool-Driven AI Behavior:** AI behavior must be implemented through tool calls.
