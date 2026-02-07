@@ -1,11 +1,7 @@
 from typing import Optional, List
-# from backend.services.task_service import TaskService
-# from backend.services.task_repository import TaskRepository # Import repository to instantiate service
-# from backend.models.task import Task # Import Task model
-# from backend.cli.error_handler import handle_error, get_int_input
 from services.task_service import TaskService
-from services.task_repository import TaskRepository # Import repository to instantiate service
-from models.task import Task # Import Task model
+from services.task_repository import TaskRepository 
+from models.task import Task 
 from cli.error_handler import handle_error, get_int_input
 
 def add_task_command(task_service: TaskService):
@@ -37,7 +33,7 @@ def view_tasks_command(task_service: TaskService):
 
 def update_task_command(task_service: TaskService):
     task_id = get_int_input("Enter the ID of the task to update: ")
-    if task_id is None: # User pressed enter on prompt
+    if task_id is None: 
         return
 
     print("Enter new title (leave blank to keep current):")
@@ -51,7 +47,7 @@ def update_task_command(task_service: TaskService):
     elif new_description_input:
         new_description = new_description_input
     else:
-        new_description = None # Keep current if blank and not 'none' for clearing
+        new_description = None
 
     try:
         updated_task = task_service.update_task(task_id, new_title, new_description)
@@ -67,7 +63,7 @@ def delete_task_command(task_service: TaskService):
     if task_id is None:
         return
     
-    task_to_delete = task_service.repository.get_by_id(task_id) # Need to fetch to show title
+    task_to_delete = task_service.repository.get_by_id(task_id) 
     if not task_to_delete:
         print(f"Error: Task with ID {task_id} not found.")
         return
@@ -78,7 +74,7 @@ def delete_task_command(task_service: TaskService):
             if task_service.delete_task(task_id):
                 print(f"Task ID {task_id} deleted successfully!")
             else:
-                print(f"Error: Task with ID {task_id} not found (unexpected).") # Should not happen if task_to_delete exists
+                print(f"Error: Task with ID {task_id} not found (unexpected).") 
         except Exception as e:
             handle_error(e, f"Failed to delete task ID {task_id}.")
     else:
