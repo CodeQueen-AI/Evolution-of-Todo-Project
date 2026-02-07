@@ -50,10 +50,6 @@ export default function SignInPage() {
       {/* Form Section */}
       <div className="w-full md:w-1/2 flex items-center justify-center px-10">
         <div className="w-full max-w-md">
-
-          {/* <h2 className="text-4xl font-semibold text-white mb-10">
-            Welcome Back
-          </h2> */}
           <h2 className="text-4xl font-semibold text-white mb-10 text-center">
   Welcome Back
 </h2>
