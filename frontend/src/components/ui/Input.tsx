@@ -1,7 +1,6 @@
 import React from 'react';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  // You can add more specific props here if needed
 }
 
 export const Input: React.FC<InputProps> = ({ className = '', ...props }) => {
