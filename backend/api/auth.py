@@ -1,33 +1,12 @@
-# from fastapi import APIRouter, Depends, HTTPException
-# from fastapi.security import OAuth2PasswordRequestForm
-# from middleware.auth import create_access_token  # middleware ke function ko import kiya
-
-# router = APIRouter()
-
-# @router.post("/token")
-# async def login(form_data: OAuth2PasswordRequestForm = Depends()):
-#     # simple hardcoded check, later replace with DB check
-#     if form_data.username != "test_user_id" or form_data.password != "1234":
-#         raise HTTPException(status_code=401, detail="Incorrect username or password")
-    
-#     access_token = create_access_token({"sub": form_data.username})
-#     return {"access_token": access_token, "token_type": "bearer"}
-
-
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel
-from middleware.auth import create_access_token  # Keep your existing JWT function
+from middleware.auth import create_access_token  
 
 router = APIRouter()
 
-# ------------------------------
-# In-memory user store (for now)
-# ------------------------------
 fake_users_db = {}
 
-# ------------------------------
 # Pydantic Models
-# ------------------------------
 class UserCreate(BaseModel):
     name: str
     email: str
@@ -37,9 +16,7 @@ class UserLogin(BaseModel):
     email: str
     password: str
 
-# ------------------------------
 # Signup Endpoint
-# ------------------------------
 @router.post("/signup")
 async def signup(user: UserCreate):
     """
@@ -60,9 +37,7 @@ async def signup(user: UserCreate):
     access_token = create_access_token(data={"sub": user.email})
     return {"access_token": access_token, "token_type": "bearer"}
 
-# ------------------------------
 # Signin Endpoint
-# ------------------------------
 @router.post("/signin")
 async def signin(user: UserLogin):
     """
